@@ -1,3 +1,8 @@
 *tmp**
 **pickle**
-.DS*
+*.DS*
+*.csv
+notebooks/.DS_Store
+data/
+inter_c2mean/
+old_config/
