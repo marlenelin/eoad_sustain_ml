@@ -6,3 +6,7 @@ notebooks/.DS_Store
 data/
 inter_c2mean/
 old_config/
+data_merger/
+*Workshop*
+notebooks/additional_sens_analysis/ucsf_rep.pptx
+notebooks/additional_sens_analysis/auto_examples_jupyter/
