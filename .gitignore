@@ -10,3 +10,8 @@ data_merger/
 *Workshop*
 notebooks/additional_sens_analysis/ucsf_rep.pptx
 notebooks/additional_sens_analysis/auto_examples_jupyter/
+notebooks/additional_sens_analysis/~$lava_data_dictionary_07_02_2025.xlsx
+.gitignore
+notebooks/additional_sens_analysis/lava_data_dictionary_07_02_2025.xlsx
+notebooks/additional_sens_analysis/07_02_2025_mac_cdr_results.xlsx
+notebooks/.DS_Store
