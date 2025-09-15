@@ -17,7 +17,6 @@ library(effects)
 library(patchwork)
 library(jsonlite)  # for saving to JSON
 library(emmeans)
-library(pastaPlot())
 library(interactions)
 library(readr)
 library(dplyr)
@@ -29,13 +28,14 @@ library(ggplot2)
 library(performance)
 library(lubridate)
 library(sjPlot)
+library(here)
 library(ggpubr)  # For arranging plots
-setwd("/Users/linlin/Desktop/brain stuff/data/")
+setwd("/Users/linlin/Desktop/RabLab/eoad_sustain_ml/data")
 ```
 
 # read
 ```{r readin} 
-bldat <- read_csv("sustain_dat_baseline_filtered.csv") 
+bldat <- read_csv(here("data","sustain_dat_baseline_filtered.csv"))
 bldat_clean <- bldat %>% filter(dx == 'EOAD') %>% filter(subtype != 99)
 bldat_clean$subtype <- as.factor(bldat_clean$subtype)
 bldat_clean$stage <- as.numeric(bldat_clean$stage)
@@ -43,7 +43,7 @@ bldat_clean$PTGENDER <- as.factor(bldat_clean$PTGENDER)
 dim(bldat_clean)
 
 # Generate visualization plot
-var_range <- read.csv("cognitive measures.csv")
+var_range <- read.csv(here("data","cognitive measures.csv"))
 ```
 
 # baseline
@@ -247,15 +247,14 @@ for (var in variables) {
 
 # longitudinal 
 ```{R}  
-long <- read.csv('combined_exclude_long_forR_longi.csv')
-var_list <- c('UDSBENTC','TRAILA','DIGFORCT','MINTTOTS','Semantic_fluency','MOCATOTS','CDRSB','ANIMALS','MOCATOTS','TRAILB','DIGBACCT','Phonemic_fluency','AVDEL30MIN','CRAFTDRE','UDSBENTD' )
-#var_list <- c('UDSBENTC')
+long <- read.csv(here("data",'combined_exclude_long_forR_longi.csv'))
+var_list <- c('UDSBENTC','TRAILA','DIGFORCT','MINTTOTS','MOCATOTS','CDRSB','TRAILB','DIGBACCT')
 # Loop through each variable
 subject_counts <- list()
 for (var_name in var_list) {
   var_file <- paste0(var_name, ".csv")  # Assign the file path
-  print(var_name)  # Print progress
-  df <- read.csv(var_file)
+  print(var_name)  # Print progressß
+  df <- read.csv(here("data",var_file))
 
   # Filter EOAD patients and keep subjects with at least two records
   df <- df %>%
@@ -272,7 +271,7 @@ for (var_name in var_list) {
   longitudinal_model <- lmer(as.formula(paste(var_name, "~ subtype * time_yr + Centiloid + PTGENDER + Age + PTEDUCAT + (1 + time_yr | subj)")), data = df, REML = FALSE)
 
   # Create results directory
-  results_folder <- paste0("results_", var_name)
+  results_folder <- here("data",paste0("results08_", var_name))
   dir.create(results_folder, showWarnings = FALSE)
 
   # Save model summary
@@ -288,17 +287,17 @@ for (var_name in var_list) {
   writeLines(anova_output, file.path(results_folder, paste0(var_name, "anova_long.txt")))
   # trend compare
   trends <- capture.output(emtrends(longitudinal_model, pairwise~subtype,var='time_yr'))
-  writeLines(trends, file.path(results_folder, paste0(var_name, "_slope_compare_longitudinal.txt")))
+  #writeLines(trends, file.path(results_folder, paste0(var_name, "_slope_compare_longitudinal.txt")))
   # omnibus p
   inter_p <- round(aov_ss["subtype:time_y", "Pr(>Chisq)"],3)
   if (inter_p < 0.001)
     inter_p = '***'
   # slope emmtrend comparion
   trends <- capture.output(emtrends(longitudinal_model, pairwise~subtype,var='time_yr'))
-  writeLines(trends, file.path(results_folder, paste0(var, "_slope_compare_longitudinal.txt")))
+  #writeLines(trends, file.path(results_folder, paste0(var, "_slope_compare_longitudinal.txt")))
   # Generate simple slopes analysis and save it
   simple_slopes_output <- capture.output(sim_slopes(longitudinal_model, pred = "time_yr", modx = "subtype"))
-  writeLines(simple_slopes_output, file.path(results_folder, paste0(var, "_simple_slopes_longitudinal.txt")))
+  #writeLines(simple_slopes_output, file.path(results_folder, paste0(var, "_simple_slopes_longitudinal.txt")))
 
   # Generate new data for predictions
   newdata <- expand.grid(
@@ -330,7 +329,7 @@ for (var_name in var_list) {
   n_sub <- length(unique(df$subj[!is.na(df[[var_name]])]))
   subject_counts[[var_name]] <- n_sub
    p <- ggplot() + 
-    geom_line(data = df, aes(x = time_yr, y = .data[[var_name]], group = subj), color = "grey80", size = 0.4) +
+    geom_line(data = df, aes(x = time_yr, y = .data[[var_name]], group = subj, color = subtype), size = 0.4, alpha = 0.3) +#"grey80"
     geom_ribbon(data = newdata, aes(x = time_yr, ymin = lwr, ymax = upr, fill = subtype), alpha = 0.2) +
     geom_line(data = newdata, aes(x = time_yr, y = fit, color = subtype), size = 1.2) +
     labs(
@@ -341,8 +340,6 @@ for (var_name in var_list) {
       color = "Subtype",
       fill = "Subtype"
     ) +
-  #  scale_color_manual(values = c("dark blue", "dark green", "dark red")) +
-  #  scale_fill_manual(values = c("dark blue", "dark green", "dark red")) +
          scale_color_manual(values = c("#1f449c", "#32ABA6", "#f05039")) +
   scale_fill_manual(values = c("#1f449c", "#32ABA6", "#f05039"))+
 
@@ -374,7 +371,7 @@ for (var_name in var_list) {
   
   # scale_y_continuous(limits =c(y_min,y_max),expand = c(0,0))
   # Save plot
-  ggsave(file.path(results_folder, paste0(var_name, "_longitudinal_plot_unannotated.png")), plot = p, width = 8, height = 6, dpi = 300,bg='#ffffff')
+  ggsave(file.path(results_folder, paste0(var_name, "_longitudinal_plot_unannotated_colorized.png")), plot = p, width = 8, height = 6, dpi = 300,bg='#ffffff')
   
   # facet
   # Create a list to store plots
