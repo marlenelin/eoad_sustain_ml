@@ -14,3 +14,4 @@ notebooks/.DS_Store
 tests/
 *.json
 *Rhistory*
+~$file_description.xlsx
