@@ -1,0 +1,124 @@
+---
+title: "score_assumption"
+author: "Marlene Lin"
+date: "4/30/2025"
+output: html_document
+---
+```{r}
+# Install required packages (only need to do this once)
+#install.packages(c("performance", "gvlma", "report", "car","bestNormalize"))
+
+# Load the packages (do this every R session you work in)
+library(performance)
+library(gvlma)
+library(report)
+library(car)
+library(MASS)  
+library(bestNormalize)
+
+```
+```{r } 
+bldat <- read_csv("sustain_dat_baseline_filtered.csv") 
+bldat_clean <- bldat %>% filter(dx == 'EOAD') %>% filter(subtype != 99)
+bldat_clean$subtype <- as.factor(bldat_clean$subtype)
+bldat_clean$stage <- as.numeric(bldat_clean$stage)
+bldat_clean$PTGENDER <- as.factor(bldat_clean$PTGENDER)
+dim(bldat_clean)
+
+# Generate visualization plot
+var_range <- read.csv("cognitive measures.csv")
+```
+```{r}
+variables <- c('UDSBENTC', 'Line_orientation', 'Line_length', 'TRAILA', 'DIGFORCT', 
+               'CRAFTURS', 'FTDREAAS', 'FTDSEMSU', 'FTDANATS', 'FTDRATIO', 'FTDVERBC', 
+               'FTDNOUNC', 'FTDWORRC', 'FTDWORIC', 'FTDSEMMT', 'FTDSENAS', 'VEG', 
+               'ANIMALS', 'MINTTOTS', 'MOCATOTS', 'CDRSB', 'NACCGDS', 'TOTAL13', 
+               'MMSCORE', 'TRAILB', 'DIGBACCT', 'UDSVERLC', 'UDSVERFC', 'digittotal', 
+               'Match', 'Flanker',  'CRAFTDRE', 'UDSBENTD','AVDEL30MIN')
+ 
+formula <- as.formula(paste(var, "~ subtype * stage + PTEDUCAT + PTGENDER + Centiloid + Age"))
+model <- lm(formula, data = bldat_clean)
+check_model(model)
+plot(bestNormalize(bldat$MINTTOTS))
+```
+
+
+
+# batch
+```{R} 
+library(performance)
+library(bestNormalize)
+library(report)
+library(ggplot2)
+library(moments)  # for skewness
+
+variables <- c('UDSBENTC', 'Line_orientation', 'Line_length', 'TRAILA', 'DIGFORCT', 
+               'CRAFTURS', 'FTDREAAS', 'FTDSEMSU', 'FTDANATS', 'FTDRATIO', 'FTDVERBC', 
+               'FTDNOUNC', 'FTDWORRC', 'FTDWORIC', 'FTDSEMMT', 'FTDSENAS', 'VEG', 
+               'ANIMALS', 'MINTTOTS', 'MOCATOTS', 'CDRSB', 'NACCGDS', 'TOTAL13', 
+               'MMSCORE', 'TRAILB', 'DIGBACCT', 'UDSVERLC', 'UDSVERFC', 'digittotal', 
+               'Match', 'Flanker',  'CRAFTDRE', 'UDSBENTD','AVDEL30MIN')
+
+# Create main diagnostics folder
+if (!dir.exists("diagnostics")) dir.create("diagnostics")
+
+for (var in variables) {
+  
+  # Make a subfolder for each variable
+  folder <- file.path("diagnostics", var)
+  if (!dir.exists(folder)) dir.create(folder)
+  
+  # Prepare the formula and fit the model
+  formula <- as.formula(paste(var, "~ subtype * stage + PTEDUCAT + PTGENDER + Centiloid + Age"))
+  
+  # Check if variable exists and has enough non-missing data
+  if (sum(!is.na(bldat_clean[[var]])) < 10) {
+    cat(paste0("Skipping ", var, ": not enough data.\n"))
+    next
+  }
+  
+  model <- lm(formula, data = bldat_clean)
+  
+  #### 1️⃣ Save check_model plot #### 
+  cm_plot <- check_model(model)
+
+  png(file = file.path(folder, paste0(var, "_check_model.png")), 
+      width = 1200, height = 1800, res = 150)
+  
+  print(cm_plot)
+  
+  dev.off()
+  
+  #### 2️⃣ Histogram with skewness ####
+  dat <- na.omit(bldat_clean[[var]])
+  sk <- round(skewness(dat), 2)
+  
+  p_hist <- ggplot(data.frame(x = dat), aes(x = x)) +
+    geom_histogram(color = "black", fill = "lightblue", bins = 30) +
+    labs(title = paste("Histogram of", var), x = var, y = "Count") +
+    annotate("text", x = max(dat, na.rm = TRUE), 
+             y = max(table(cut(dat, 30))), 
+             label = paste("Skewness:", sk), hjust = 1, size = 5) +
+    theme_minimal()
+  
+  ggsave(file.path(folder, paste0(var, "_histogram.png")), 
+         p_hist, width = 6, height = 5, dpi = 150)
+  
+  #### 3️⃣ bestNormalize ####
+  bn <- bestNormalize(dat)
+  
+  # Save transformation plot
+  png(file = file.path(folder, paste0(var, "_bestNormalize.png")), 
+      width = 1000, height = 800, res = 150)
+  plot(bn)
+  dev.off()
+  
+  # Save bestNormalize report
+  sink(file.path(folder, paste0(var, "_bestNormalize_report.txt")))
+  print(bn)
+  sink()
+  
+  cat(paste0("Finished diagnostics for: ", var, "\n"))
+}
+
+```

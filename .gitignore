@@ -11,3 +11,6 @@ data_merger/
 notebooks/additional_sens_analysis/ucsf_rep/
 .gitignore
 notebooks/.DS_Store
+tests/
+*.json
+*Rhistory*
