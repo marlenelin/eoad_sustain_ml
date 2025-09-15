@@ -1,6 +1,6 @@
 %% Define input parameters
-modality = 'tau'; % Set this to your desired modality
-adjust_name = 'no'; % this does not include stage
+modality = 'amy'; % Set this to your desired modality
+adjust_name = 'nocdr'; % this does not include stage
 subtypes = [1, 2, 3]; % The three subtype numbers
 add_mask = double(~niftiread('/home/mac/mlin2/cluster_analysis/rs16Sub_harvard_bin01.nii'));
 og_mask = '/home/mac/mlin2/cluster_analysis/TPM_GM_Mask_10pc.nii';
@@ -17,14 +17,8 @@ end
 %% Loop through each subtype
 for subtype = subtypes
     % Define input file names
-    if strcmp(modality, "tau")
-        mod_name = "";
-    else
-        mod_name = "_" + modality;
-    end
-    
-    fwep_file = fullfile(base_folder, sprintf('%s_s%dref%s/corrected_%s_s%dref%s_long.mat', adjust_name, subtype, mod_name, adjust_name, subtype, mod_name));
-    nofwep_file = fullfile(base_folder, sprintf('%s_s%dref%s/uncorrected_%s_s%dref%s_long.mat', adjust_name, subtype, mod_name, adjust_name, subtype, mod_name));
+    fwep_file = fullfile(base_folder, sprintf('%s_%s_s%dref/corrected_%s_s%dref.mat', modality, adjust_name, subtype, adjust_name, subtype));
+    nofwep_file = fullfile(base_folder, sprintf('%s_%s_s%dref/uncorrected_%s_s%dref.mat', modality, adjust_name, subtype, adjust_name, subtype));
     
     % Check if both files exist
     if ~exist(fwep_file, 'file') || ~exist(nofwep_file, 'file')
@@ -84,7 +78,7 @@ nofwep_combined = zeros(121, 145, 121);
 for subtype = subtypes
     % Get the spelled-out subtype name (e.g., "one" for subtype 1)
     spelled_subtype = subtype_map{subtype}; 
-    subtype_folder = fullfile(base_folder, sprintf('%s_s%dref%s', adjust_name, subtype, mod_name));
+    subtype_folder = fullfile(base_folder, sprintf('%s_%s_s%dref', modality, adjust_name, subtype));
     
     % List all .nii files in the folder containing 'day_to_baseline' and 'subtype' in their name
     nii_files = dir(fullfile(subtype_folder, '*.nii'));
@@ -108,7 +102,7 @@ for subtype = subtypes
         fwep_combined = fwep_combined + abs(contrast_fwep);
     end 
     % Locate the uncorrected contrast t-map from the struct for the respective subtype
-    uncorrected_file = fullfile(subtype_folder, sprintf('uncorrected_%s_s%dref%s_long.mat', adjust_name,subtype,mod_name));
+    uncorrected_file = fullfile(subtype_folder, sprintf('uncorrected_%s_s%dref.mat', adjust_name,subtype));
     
     if ~exist(uncorrected_file, 'file')
         fprintf('Skipping subtype %d: Missing uncorrected file.\n', subtype);
@@ -166,7 +160,7 @@ disp('Processing complete.');
 % combine contrast
 surface = 'ICBM'; 
 view = 'lm';
-surface_path = '/home/mac/mlin2/Downloads/BrainNetViewer_20191031/Data/SurfTemplate/BrainMesh_ICBM152_smoothed.nv'; % BrainMesh_Ch2_smoothed.nv';
+surface_path = '/home/mac/mlin2/Downloads/utilities/BrainNetViewer_20191031/Data/SurfTemplate/BrainMesh_ICBM152_smoothed.nv'; % BrainMesh_Ch2_smoothed.nv';
 cfig = 'brainnet config/doublep_binarize.mat'; % Configuration file for BrainNet viewer
 folder_path = '/home/mac/mlin2/cluster_analysis/voxelstat analysis/'; % Folder to search within
 disp('generating images');
@@ -175,9 +169,9 @@ save_path = fullfile(base_folder, sprintf('%s_%s_doublep_combined.jpg', modality
 BrainNet_MapCfg(surface_path, final_output_filename, save_path, cfig);
 
 % baseline estimate
-bl_fig = "brainnet config/pt12_vi.mat";
-%"brainnet config/mri_d2blest_pt25.mat";
-%""brainnet config/amy_d2blest_pos.mat";
+%bl_fig = "brainnet config/pt12_vi.mat"; #tau
+%bl_fig = "brainnet config/mri_d2blest_pt25.mat";
+bl_fig = "brainnet config/amy_d2blest_pos.mat";
 for subtype = subtypes
     blest_path = fullfile(base_folder, sprintf('%s_%s_s%d_d2blest_double.nii', modality, adjust_name, subtype));
     blest_spath = fullfile(base_folder, sprintf('%s_%s_s%d_d2blest_double.jpg', modality, adjust_name, subtype));

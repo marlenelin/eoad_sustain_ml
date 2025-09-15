@@ -5,7 +5,7 @@ function run_vs_script(stringModel, modelName)
     imageType = 'nifti';
     data_file = '/home/mac/mlin2/cluster_analysis/type assignment/full_combined_v3_amy.csv';
     mask_file = '/home/mac/mlin2/cluster_analysis/TPM_GM_Mask_10pc.nii';
-    multivalueVariables = {'mname'};%mname %fname %'fbb_file
+    multivalueVariables = {'fname'};%mname %fname %'fbb_file
     categoricalVars = {''}; % none
     includeString = '';
 
@@ -14,7 +14,7 @@ function run_vs_script(stringModel, modelName)
     if ~exist(output_path, 'dir')
         mkdir(output_path);
     end
-    save_fname = fullfile(output_path, ['uncorrected_' modelName '_long_mri.mat']);
+    save_fname = fullfile(output_path, ['uncorrected_' modelName '_tau.mat']);
 
     % Run LME
     [c_struct, slices_p, image_height_p, image_width_p, coeff_vars, voxel_num, df, voxel_dims] = ...
@@ -46,7 +46,7 @@ function run_vs_script(stringModel, modelName)
     end
 
     % Save corrected results
-    save_corrected_fname = fullfile(output_path, ['corrected_' modelName '_long_mri.mat']);
+    save_corrected_fname = fullfile(output_path, ['corrected_' modelName '_tau.mat']);
     save(save_corrected_fname, 'corrected_struct');
 
     %% Visualization with BrainNet

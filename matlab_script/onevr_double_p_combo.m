@@ -1,11 +1,11 @@
 %% Define input parameters
-modality = 'tau'; % Set this to your desired modality
-adjust_name = 'thrept8'; % Set this, or change as needed
+modality = 'amy'; % Set this to your desired modality
+adjust_name = '3s'; % Set this, or change as needed
 subtypes = [1, 2, 3]; % The three subtype numbers
 
 % Define base folder and output folder
 base_folder = '/home/mac/mlin2/cluster_analysis/comparison 1vr/'; % Change this if needed
-output_folder = fullfile(base_folder, sprintf('%s_inter_c2mean_%s', modality, adjust_name));
+output_folder = fullfile(base_folder, sprintf('%s_fullnocdr_%s', modality, adjust_name));
 
 % Create output folder if it doesn't exist
 if ~exist(output_folder, 'dir')
@@ -15,8 +15,8 @@ end
 % Loop through each subtype
 for subtype = subtypes
     % Define input file names
-    fwep_file = fullfile(base_folder, sprintf('%s_inter_c2mean_%s_fwep_ttest_subtype_s%d/combined_contrast.nii', modality, adjust_name, subtype));
-    nofwep_file = fullfile(base_folder, sprintf('%s_inter_c2mean_%s_nofwep_ttest_subtype_s%d/combined_contrast.nii', modality, adjust_name, subtype));
+    fwep_file = fullfile(base_folder, sprintf('%s_fullnocdr_%s_fwep_ttest_x3_s%d/combined_contrast.nii', modality, adjust_name, subtype));
+    nofwep_file = fullfile(base_folder, sprintf('%s_fullnocdr_%s_nofwep_ttest_x3_s%d/combined_contrast.nii', modality, adjust_name, subtype));
     
     % Check if both files exist
     if ~exist(fwep_file, 'file') || ~exist(nofwep_file, 'file')
@@ -59,7 +59,7 @@ disp('Processing complete.');
 %% visualize
 surface = 'ICBM'; 
 view = 'lm';
-surface_path = '/home/mac/mlin2/Downloads/BrainNetViewer_20191031/Data/SurfTemplate/BrainMesh_ICBM152_smoothed.nv'; % BrainMesh_Ch2_smoothed.nv';
+surface_path = '/home/mac/mlin2/Downloads/utilities/BrainNetViewer_20191031/Data/SurfTemplate/BrainMesh_ICBM152_smoothed.nv'; % BrainMesh_Ch2_smoothed.nv';
 cfig = 'brainnet config/doublep_thre3.mat'; % Configuration file for BrainNet viewer
 folder_path = '/home/mac/mlin2/cluster_analysis/comparison 1vr/'; % Folder to search within
 disp('generating images');
