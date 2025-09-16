@@ -52,7 +52,7 @@ Contains `code_spec` (specify what each notebook/R file is used for), `matlab_sc
 | Python and R code         | ✔️ (backup)                                                                                  | ✔️                                                                       | —                            |
 | MATLAB scripts            | ✔️                                                                                           | ✔️ (backup)                                                               | —                            |
 | Data                      | ✔️ (backup)                                                                                  | ✔️                                                                       | —                            |
-| Images                    | —                                                                                            | ✔️ (copied 202509)                                                                         | ✔️ (`/mnt/coredata`)         |
+| Images                    | ✔️ (copied 202509)                                                                                            | -                                                                         | ✔️ (`/mnt/coredata`)         |
                                                                                                                                   
 ---
 

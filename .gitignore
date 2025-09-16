@@ -15,3 +15,4 @@ tests/
 *.json
 *Rhistory*
 ~$file_description.xlsx
+*DS_Store
