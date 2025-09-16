@@ -44,7 +44,7 @@ Contains `code_spec` (specify what each notebook/R file is used for), `matlab_sc
 
 ## Project backup (self-note)
 
-| Content Type                         | Box            | Network Drive (petcore personal)                                                            | Local Work Laptop                                                               | VM                          |
+| Content Type                         | Box            | Network Drive (petcore personal)                                                            | Work Laptop                                                               | VM                          |
 | ------------------------------------ | -------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------- |
 | Model and result files         | ✔️ (`sustain_backup\`) | ✔️                                                                                           | final model files                                    | —                            |—                            |
 | Writing      | —              | ✔️        | —                                                                              | —                            |
@@ -52,7 +52,7 @@ Contains `code_spec` (specify what each notebook/R file is used for), `matlab_sc
 | Python and R code                      | —              | ✔️ (backup)                                                                                  | ✔️                                                                             | —                            |
 | MATLAB scripts                         | —              | ✔️                                                                                           | ✔️ (backup)                                                                    | —                            |
 | Data                                   | —              | ✔️ (backup)                                                                                  | ✔️                             | —                            |
-| Raw/processed images                   | —              | —                                                                                            | —                                                                              | ✔️ (`/mnt/coredata/processing`) |
+| Raw/processed images                   | —              | —                                                                                            | —                                                                              | ✔️ (`/mnt/coredata`) |
                                                                                                                                               
 ---
 
