@@ -44,16 +44,16 @@ Contains `code_spec` (specify what each notebook/R file is used for), `matlab_sc
 
 ## Project backup (self-note)
 
-| Content Type                         | Box            | Network Drive (petcore personal)                                                            | Work Laptop                                                               | VM                          |
-| ------------------------------------ | -------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------- |
-| Model and result files         | ✔️ (`sustain_backup\`) | ✔️                                                                                           | final model files                                    | —                            |—                            |
-| Writing      | —              | ✔️        | —                                                                              | —                            |
-| File storage description               | ✔️              | ✔️                                                                                           | ✔️                                                                              | —                            |
-| Python and R code                      | —              | ✔️ (backup)                                                                                  | ✔️                                                                             | —                            |
-| MATLAB scripts                         | —              | ✔️                                                                                           | ✔️ (backup)                                                                    | —                            |
-| Data                                   | —              | ✔️ (backup)                                                                                  | ✔️                             | —                            |
-| Images                   | —              | —                                                                                            | —                                                                              | ✔️ (`/mnt/coredata`) |
-                                                                                                                                              
+| Content Type               | Network Drive (petcore personal)                                                            | Work Laptop                                                               | VM                          |
+| ------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------- |
+| Model and result files     | ✔️                                                                                           | final model files                                                          | —                            |
+| Writing                   | ✔️                                                                                           | —                                                                         | —                            |
+| File storage description  | ✔️                                                                                           | ✔️                                                                        | —                            |
+| Python and R code         | ✔️ (backup)                                                                                  | ✔️                                                                       | —                            |
+| MATLAB scripts            | ✔️                                                                                           | ✔️ (backup)                                                               | —                            |
+| Data                      | ✔️ (backup)                                                                                  | ✔️                                                                       | —                            |
+| Images                    | —                                                                                            | ✔️ (copied 202509)                                                                         | ✔️ (`/mnt/coredata`)         |
+                                                                                                                                  
 ---
 
 ## Setup
