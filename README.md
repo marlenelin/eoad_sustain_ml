@@ -39,21 +39,7 @@ MATLAB scripts for image visualizations and voxelwise analyses
 ## `file_description.xlsx`
 
 Contains `code_spec` (specify what each notebook/R file is used for), `matlab_script` (specify what each matlab script and mat file is for), `config_spec` (alternative SuStaIn model configuration and the corresponding out files + subtype and stage assignment + baseline subtype visualization storage location), `data_spec` (specify what each csv/xlsx data file is for), and `BrainNetViewer_colormap` (configurations file for BrainNetViewer) tabs
-
----
-
-## Project backup (self-note)
-
-| Content Type               | Network Drive (petcore personal)                                                            | Work Laptop                                                               | VM                          |
-| ------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------- |
-| Model and result files     | ✔️                                                                                           | final model files                                                          | —                            |
-| Writing                   | ✔️                                                                                           | —                                                                         | —                            |
-| File storage description  | ✔️                                                                                           | ✔️                                                                        | —                            |
-| Python and R code         | ✔️ (backup)                                                                                  | ✔️                                                                       | —                            |
-| MATLAB scripts            | ✔️                                                                                           | ✔️ (backup)                                                               | —                            |
-| Data                      | ✔️ (backup)                                                                                  | ✔️                                                                       | —                            |
-| Images                    | ✔️ (copied 202509)                                                                                            | -                                                                         | ✔️ (`/mnt/coredata`)         |
-                                                                                                                                  
+                                                                                                             
 ---
 
 ## Setup
